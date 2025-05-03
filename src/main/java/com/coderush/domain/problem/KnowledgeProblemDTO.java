@@ -1,11 +1,18 @@
 package com.coderush.domain.problem;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class KnowledgeProblemDTO implements ProblemDTO {
     private Long id;
     private String title;
-    private String decription;
+    private String description;
     private ProblemType type;
 
     // 객관식인 경우 사용
