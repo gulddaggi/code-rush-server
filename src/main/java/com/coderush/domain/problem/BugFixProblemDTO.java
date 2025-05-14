@@ -1,14 +1,17 @@
 package com.coderush.domain.problem;
 
+import com.coderush.domain.entity.BugFixProblem;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class BugFixProblemDTO implements ProblemDTO {
     private Long id;
     private String title;
@@ -36,5 +39,18 @@ public class BugFixProblemDTO implements ProblemDTO {
     @Override
     public ProblemType getType() {
         return type;
+    }
+
+    public static BugFixProblemDTO from(BugFixProblem entity) {
+        return BugFixProblemDTO.builder()
+                .id(entity.getId())
+                .title(entity.getTitle())
+                .decription(entity.getDescription())
+                .type(entity.getType())
+                .choices(entity.getChoices())
+                .answer(entity.getAnswer())
+                .targetSnippet(entity.getTargetSnippet())
+                .correctFix(entity.getCorrectFix())
+                .build();
     }
 }

@@ -1,14 +1,14 @@
 package com.coderush.domain.problem;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.coderush.domain.entity.KnowledgeProblem;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class KnowledgeProblemDTO implements ProblemDTO {
     private Long id;
     private String title;
@@ -32,5 +32,16 @@ public class KnowledgeProblemDTO implements ProblemDTO {
     @Override
     public ProblemType getType() {
         return type;
+    }
+
+    public static KnowledgeProblemDTO from(KnowledgeProblem entity) {
+        return KnowledgeProblemDTO.builder()
+                .id(entity.getId())
+                .title(entity.getTitle())
+                .description(entity.getDescription())
+                .type(entity.getType())
+                .choices(entity.getChoices())
+                .answer(entity.getAnswer())
+                .build();
     }
 }

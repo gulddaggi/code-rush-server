@@ -1,19 +1,24 @@
 package com.coderush.domain.entity;
 
+import com.coderush.domain.problem.ProblemType;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "submissions")
-@Data
-@NoArgsConstructor
 public class Submission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long problemId;
+
+    @Enumerated(EnumType.STRING)
+    private ProblemType problemType;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

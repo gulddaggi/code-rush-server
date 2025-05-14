@@ -2,15 +2,16 @@ package com.coderush.domain.entity;
 
 import com.coderush.domain.problem.ProblemType;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "knowledge_problems")
-@Data
-@NoArgsConstructor
 public class KnowledgeProblem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
