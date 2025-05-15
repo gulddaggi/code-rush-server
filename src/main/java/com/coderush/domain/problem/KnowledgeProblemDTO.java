@@ -3,8 +3,6 @@ package com.coderush.domain.problem;
 import com.coderush.domain.entity.KnowledgeProblem;
 import lombok.*;
 
-import java.util.List;
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,7 +14,7 @@ public class KnowledgeProblemDTO implements ProblemDTO {
     private ProblemType type;
 
     // 객관식인 경우 사용
-    List<String> choices;
+    private String selectedChoice;
     private String answer;
 
     @Override
@@ -40,7 +38,7 @@ public class KnowledgeProblemDTO implements ProblemDTO {
                 .title(entity.getTitle())
                 .description(entity.getDescription())
                 .type(entity.getType())
-                .choices(entity.getChoices())
+                .selectedChoice(entity.getSelectedChoice())
                 .answer(entity.getAnswer())
                 .build();
     }

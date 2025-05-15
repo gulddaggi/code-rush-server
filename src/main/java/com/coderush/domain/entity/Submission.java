@@ -1,6 +1,6 @@
 package com.coderush.domain.entity;
 
-import com.coderush.domain.problem.ProblemType;
+import com.coderush.domain.enums.ProblemType;
 import jakarta.persistence.*;
 import lombok.*;
 

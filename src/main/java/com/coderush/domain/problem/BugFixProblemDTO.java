@@ -15,7 +15,7 @@ import java.util.List;
 public class BugFixProblemDTO implements ProblemDTO {
     private Long id;
     private String title;
-    private String decription;
+    private String description;
     private ProblemType type;
 
     // 객관식
@@ -45,7 +45,7 @@ public class BugFixProblemDTO implements ProblemDTO {
         return BugFixProblemDTO.builder()
                 .id(entity.getId())
                 .title(entity.getTitle())
-                .decription(entity.getDescription())
+                .description(entity.getDescription())
                 .type(entity.getType())
                 .choices(entity.getChoices())
                 .answer(entity.getAnswer())

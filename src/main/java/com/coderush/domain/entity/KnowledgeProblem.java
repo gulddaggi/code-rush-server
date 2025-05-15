@@ -22,7 +22,6 @@ public class KnowledgeProblem {
     @Enumerated(EnumType.STRING)
     private ProblemType type;
 
-    @ElementCollection
-    private List<String> choices;
+    private String selectedChoice;
     private String answer;
 }
