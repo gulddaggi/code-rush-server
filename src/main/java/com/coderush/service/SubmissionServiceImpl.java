@@ -5,11 +5,16 @@ import com.coderush.domain.entity.User;
 import com.coderush.domain.enums.ProblemType;
 import com.coderush.dto.request.problem.BugFixSubmissionDTO;
 import com.coderush.dto.request.problem.KnowledgeSubmissionDTO;
+import com.coderush.dto.response.SubmissionDTO;
 import com.coderush.repository.BugFixProblemRepository;
 import com.coderush.repository.KnowledgeProblemRepository;
 import com.coderush.repository.SubmissionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -74,5 +79,12 @@ public class SubmissionServiceImpl implements SubmissionService {
                         .user(User.builder().id(userId).build())
                         .build()
         );
+    }
+
+    @Override
+    public List<SubmissionDTO> getSubmissionsByUser(Long userId) {
+        return submissionRepository.findByUser_Id(userId).stream()
+                .map(SubmissionDTO::from)
+                .collect(toList());
     }
 }
