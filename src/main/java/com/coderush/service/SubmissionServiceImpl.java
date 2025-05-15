@@ -2,6 +2,7 @@ package com.coderush.service;
 
 import com.coderush.domain.entity.Submission;
 import com.coderush.domain.entity.User;
+import com.coderush.domain.enums.ProblemType;
 import com.coderush.dto.request.problem.BugFixSubmissionDTO;
 import com.coderush.dto.request.problem.KnowledgeSubmissionDTO;
 import com.coderush.repository.BugFixProblemRepository;
@@ -39,7 +40,7 @@ public class SubmissionServiceImpl implements SubmissionService {
         submissionRepository.save(
                 Submission.builder()
                         .problemId(problem.getId())
-                        .problemType(problem.getType())
+                        .problemType(ProblemType.BUG_FIX)
                         .submittedAnswer(submitted)
                         .correct(isCorrect)
                         .user(User.builder().id(userId).build())
@@ -67,7 +68,7 @@ public class SubmissionServiceImpl implements SubmissionService {
         submissionRepository.save(
                 Submission.builder()
                         .problemId(problem.getId())
-                        .problemType(problem.getType())
+                        .problemType(ProblemType.KNOWLEDGE)
                         .submittedAnswer(submitted)
                         .correct(isCorrect)
                         .user(User.builder().id(userId).build())
