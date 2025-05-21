@@ -27,6 +27,7 @@ public class BugFixProblem {
     private String answer;
 
     private String targetSnippet;
+    @Column(columnDefinition = "TEXT")
     private String correctFix;
 }
 

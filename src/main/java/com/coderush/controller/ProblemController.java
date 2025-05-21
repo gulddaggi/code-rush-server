@@ -3,6 +3,7 @@ package com.coderush.controller;
 import com.coderush.domain.problem.BugFixProblemDTO;
 import com.coderush.domain.problem.KnowledgeProblemDTO;
 import com.coderush.domain.problem.ProblemDTO;
+import com.coderush.service.GPTService;
 import com.coderush.service.ProblemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProblemController {
     private final ProblemService problemService;
+    private final GPTService gptService;
 
     /**
      * 전체 문제 목록 조회
@@ -42,4 +44,12 @@ public class ProblemController {
     public ResponseEntity<KnowledgeProblemDTO> getKnowledgeProblem(@PathVariable Long id) {
          return ResponseEntity.ok(problemService.getKnowledgeProblemById(id));
      }
+
+    /**
+     * 문제 출제
+     */
+    @GetMapping("/set")
+    public ResponseEntity<List<ProblemDTO>> getSetProblems() {
+        return ResponseEntity.ok(gptService.generateProblemSet());
+    }
 }

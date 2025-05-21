@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserService userServide;
+    private final UserService userService;
 
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO dto) {
-        return ResponseEntity.ok(userServide.createUser(dto));
+        return ResponseEntity.ok(userService.createUser(dto));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
-        return ResponseEntity.ok(userServide.getUserById(id));
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 }

@@ -10,3 +10,7 @@ spring:
     properties:
       hibernate:
         format_sql: true # SQL 출력 시 포맷팅
+
+openai:
+  api:
+    key: ${OPENAI_API_KEY}

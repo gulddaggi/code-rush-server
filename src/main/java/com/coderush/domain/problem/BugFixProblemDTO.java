@@ -1,6 +1,7 @@
 package com.coderush.domain.problem;
 
 import com.coderush.domain.entity.BugFixProblem;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BugFixProblemDTO implements ProblemDTO {
     private Long id;
     private String title;
@@ -51,6 +53,18 @@ public class BugFixProblemDTO implements ProblemDTO {
                 .answer(entity.getAnswer())
                 .targetSnippet(entity.getTargetSnippet())
                 .correctFix(entity.getCorrectFix())
+                .build();
+    }
+
+    public BugFixProblem toEntity() {
+        return BugFixProblem.builder()
+                .title(this.title)
+                .description(this.description)
+                .type(this.type)
+                .choices(this.choices)
+                .answer(this.answer)
+                .targetSnippet(this.targetSnippet)
+                .correctFix(this.correctFix)
                 .build();
     }
 }
