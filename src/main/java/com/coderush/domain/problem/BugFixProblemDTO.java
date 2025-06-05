@@ -19,6 +19,7 @@ public class BugFixProblemDTO implements ProblemDTO {
     private String title;
     private String description;
     private ProblemType type;
+    private ProblemCategory category;
 
     // 객관식
     private List<String> choices;
@@ -43,12 +44,16 @@ public class BugFixProblemDTO implements ProblemDTO {
         return type;
     }
 
+    @Override
+    public ProblemCategory getCategory() { return category; }
+
     public static BugFixProblemDTO from(BugFixProblem entity) {
         return BugFixProblemDTO.builder()
                 .id(entity.getId())
                 .title(entity.getTitle())
                 .description(entity.getDescription())
                 .type(entity.getType())
+                .category(entity.getCategory())
                 .choices(entity.getChoices())
                 .answer(entity.getAnswer())
                 .targetSnippet(entity.getTargetSnippet())
@@ -61,6 +66,7 @@ public class BugFixProblemDTO implements ProblemDTO {
                 .title(this.title)
                 .description(this.description)
                 .type(this.type)
+                .category(this.category)
                 .choices(this.choices)
                 .answer(this.answer)
                 .targetSnippet(this.targetSnippet)

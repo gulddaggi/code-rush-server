@@ -1,6 +1,7 @@
 package com.coderush.domain.entity;
 
 import com.coderush.domain.enums.ProblemType;
+import com.coderush.domain.problem.ProblemCategory;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,6 +20,9 @@ public class Submission {
 
     @Enumerated(EnumType.STRING)
     private ProblemType problemType;
+
+    @Enumerated(EnumType.STRING)
+    private ProblemCategory category;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -1,5 +1,6 @@
 package com.coderush.domain.entity;
 
+import com.coderush.domain.problem.ProblemCategory;
 import com.coderush.domain.problem.ProblemType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,6 +22,9 @@ public class BugFixProblem {
 
     @Enumerated(EnumType.STRING)
     private ProblemType type;
+
+    @Enumerated(EnumType.STRING)
+    private ProblemCategory category;
 
     @ElementCollection
     private List<String> choices;

@@ -16,6 +16,7 @@ public class KnowledgeProblemDTO implements ProblemDTO {
     private String title;
     private String description;
     private ProblemType type;
+    private ProblemCategory category;
 
     // 객관식인 경우 사용
     private List<String> choices;
@@ -36,12 +37,16 @@ public class KnowledgeProblemDTO implements ProblemDTO {
         return type;
     }
 
+    @Override
+    public ProblemCategory getCategory() { return category; }
+
     public static KnowledgeProblemDTO from(KnowledgeProblem entity) {
         return KnowledgeProblemDTO.builder()
                 .id(entity.getId())
                 .title(entity.getTitle())
                 .description(entity.getDescription())
                 .type(entity.getType())
+                .category(entity.getCategory())
                 .choices(entity.getChoices())
                 .answer(entity.getAnswer())
                 .build();
@@ -52,6 +57,7 @@ public class KnowledgeProblemDTO implements ProblemDTO {
                 .title(this.title)
                 .description(this.description)
                 .type(this.type)
+                .category(this.category)
                 .choices(this.choices)
                 .answer(this.answer)
                 .build();
