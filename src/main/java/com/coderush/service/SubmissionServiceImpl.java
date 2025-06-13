@@ -24,7 +24,7 @@ public class SubmissionServiceImpl implements SubmissionService {
     private final SubmissionRepository submissionRepository;
 
     @Override
-    public void submitBugFixAnswer(BugFixSubmissionDTO dto, Long userId) {
+    public boolean submitBugFixAnswer(BugFixSubmissionDTO dto, Long userId) {
         var problem = bugFixProblemRepository.findById(dto.getProblemId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 버그 문제가 존재하지 않습니다."));
 
@@ -51,10 +51,12 @@ public class SubmissionServiceImpl implements SubmissionService {
                         .user(User.builder().id(userId).build())
                         .build()
         );
+
+        return isCorrect;
     }
 
     @Override
-    public void submitKnowledgeProblem(KnowledgeSubmissionDTO dto, Long userId) {
+    public boolean submitKnowledgeProblem(KnowledgeSubmissionDTO dto, Long userId) {
         var problem = knowledgeProblemRepository.findById(dto.getProblemId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 지식 문제가 존재하지 않습니다."));
 
@@ -79,6 +81,8 @@ public class SubmissionServiceImpl implements SubmissionService {
                         .user(User.builder().id(userId).build())
                         .build()
         );
+
+        return isCorrect;
     }
 
     @Override

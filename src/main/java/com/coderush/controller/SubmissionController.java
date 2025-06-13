@@ -23,18 +23,18 @@ public class SubmissionController {
      * 버그 문제 제출 처리
      */
     @PostMapping("/bugfix")
-    public ResponseEntity<Void> submitBugFix(@RequestBody BugFixSubmissionDTO dto, @RequestParam Long userId) {
-        submissionService.submitBugFixAnswer(dto, userId);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Boolean> submitBugFix(@RequestBody BugFixSubmissionDTO dto, @RequestParam Long userId) {
+        boolean isCorrect = submissionService.submitBugFixAnswer(dto, userId);
+        return ResponseEntity.ok(isCorrect);
     }
 
     /**
      * 지식 문제 제출 처리
      */
     @PostMapping("/knowledge")
-    public ResponseEntity<Void> submitKnowledge(@RequestBody KnowledgeSubmissionDTO dto, @RequestParam Long userId) {
-        submissionService.submitKnowledgeProblem(dto, userId);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Boolean> submitKnowledge(@RequestBody KnowledgeSubmissionDTO dto, @RequestParam Long userId) {
+        boolean isCorrect = submissionService.submitKnowledgeProblem(dto, userId);
+        return ResponseEntity.ok(isCorrect);
     }
 
     /**
