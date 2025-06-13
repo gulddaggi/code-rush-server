@@ -50,4 +50,34 @@ public class RawProblemDTO {
             default -> throw new IllegalStateException("Unknown category: " + category);
         }
     }
+
+    public Object toEntity() {
+        ProblemType format = (answer != null && !answer.isEmpty()) ? ProblemType.OBJECTIVE : ProblemType.SUBJECTIVE;
+
+        switch (category) {
+            case BUGFIX -> {
+                return BugFixProblemDTO.builder()
+                        .category(category)
+                        .type(format)
+                        .title(title)
+                        .description(description)
+                        .choices(choices)
+                        .answer(answer)
+                        .targetSnippet(targetSnippet)
+                        .correctFix(correctFix)
+                        .build();
+            }
+            case KNOWLEDGE -> {
+                return KnowledgeProblemDTO.builder()
+                        .category(category)
+                        .type(format)
+                        .title(title)
+                        .description(description)
+                        .choices(choices)
+                        .answer(answer)
+                        .build();
+            }
+            default -> throw new IllegalStateException("Unknown category: " + category);
+        }
+    }
 }

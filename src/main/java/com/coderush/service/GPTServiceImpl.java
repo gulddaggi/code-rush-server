@@ -74,13 +74,15 @@ public class GPTServiceImpl implements GPTService {
             for (JsonNode node : parsed) {
                 RawProblemDTO raw = objectMapper.treeToValue(node, RawProblemDTO.class);
                 ProblemDTO dto = raw.toProblemDTO();
-                result.add(dto);
 
-                Object entity = raw.toEntity();
                 if (dto instanceof BugFixProblemDTO bugfixDTO) {
-                    bugFixProblemRepository.save(bugfixDTO.toEntity());
+                    BugFixProblem saved = bugFixProblemRepository.save(bugfixDTO.toEntity());
+                    bugfixDTO.setId(saved.getId());
+                    result.add(bugfixDTO);
                 } else if (dto instanceof KnowledgeProblemDTO knowledgeDTO) {
-                    knowledgeProblemRepository.save(knowledgeDTO.toEntity());
+                    KnowledgeProblem saved = knowledgeProblemRepository.save(knowledgeDTO.toEntity());
+                    knowledgeDTO.setId(saved.getId());
+                    result.add(knowledgeDTO);
                 }
             }
 
@@ -91,36 +93,53 @@ public class GPTServiceImpl implements GPTService {
         }
     }
 
-
-
     private String getPromptText() {
         return """
-    Please generate a total of 5 programming problems in a JSON array format:
+Please generate a total of 5 programming problems in a JSON array format:
 
-    - 3 Java bug-fix problems
-    - 2 computer science knowledge questions
+- 3 Java bug-fix problems
+- 2 computer science knowledge questions
 
-    ❗ Output must be a pure JSON array. Do NOT include explanations, markdown, or code block markers.
+❗ Output must be a pure JSON array. Do NOT include explanations, markdown, or code block markers.
 
-    Each object in the array must include the following fields:
-    - "type": either "bugfix" or "knowledge"
-    - "title": the title of the problem (written in Korean)
-    - "description": a brief explanation of the problem (written in Korean)
-    - "choices": a list of 4 options (include this field only for multiple-choice questions)
-    - "answer": a **single string** that represents the correct answer
+Each object in the array must include the following fields:
+- "type": either "bugfix" or "knowledge"
+- "title": the title of the problem (written in Korean)
+- "description": 
+    - For "bugfix": MUST follow this EXACT format:
+      - First line(s): problem explanation in Korean.
+      - Then a line: "코드:" 
+      - Then the buggy Java code (must be at least **6~10 lines long**, valid but buggy Java code).
+      - Example format:
+        문제 설명 텍스트 ...
+        
+        코드:
+        public int exampleMethod() {
+            ...
+        }
+    - For "knowledge": simple explanation only.
+- "choices": a list of 4 options (include this field only for multiple-choice questions)
+- "answer": 
+    - For "knowledge": exactly one choice text (must match one of the "choices")
+    - For "bugfix": the corrected version of "targetSnippet" — EXACTLY ONE line of code — with no comments or extra text.
 
-        ⚠️ The "answer" field must:
-        - Contain **no more than 150 characters**
-        - Be a **short explanation** or a **single line of code**
-        - **Never** include full methods or class definitions
+⚠️ The "answer" field must:
+- Contain **no more than 150 characters**
+- For "bugfix": be EXACTLY ONE line of code that replaces "targetSnippet"
+- For "knowledge": one choice text exactly
 
-    - "targetSnippet": (bugfix only) buggy Java code that the user must fix
-    - "correctFix": (bugfix only) the corrected Java code
+- "targetSnippet": (bugfix only) EXACTLY ONE buggy line from the buggy code that must be fixed.
+- "correctFix": (bugfix only) the corrected full Java method code — only the method, no surrounding classes or comments.
 
-    ✨ Notes:
-    - At least 2 of the problems should be multiple-choice (include "choices")
-    - All problem content (title, description, choices, answer) must be in **Korean**
-    """;
+✨ Notes:
+- At least 2 of the problems should be multiple-choice (include "choices")
+- All problem content (title, description, choices, answer) must be in **Korean**
+- For bugfix problems:
+  - "description" must follow the specified format with "코드:" line clearly separating explanation and code.
+  - "targetSnippet" must be exactly ONE buggy line from the buggy code
+  - "correctFix" must be the fixed full method code
+  - "answer" must be the corrected version of "targetSnippet" (one line)
+  - The buggy code should NOT be trivial (avoid basic off-by-one or null checks). Prefer bugs involving logic errors, incorrect API usage, wrong control flow, wrong variable usage, etc.
+""";
     }
-
 }
