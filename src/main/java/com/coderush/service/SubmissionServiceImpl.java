@@ -36,10 +36,17 @@ public class SubmissionServiceImpl implements SubmissionService {
             submitted = dto.getSelectedChoice();
         }
         else {
-            isCorrect = problem.getTargetSnippet().equals(dto.getTargetSnippet()) &&
-                    problem.getCorrectFix().equals(dto.getFixAttempt());
+            isCorrect = normalize(problem.getTargetSnippet()).equals(normalize(dto.getTargetSnippet())) &&
+                    normalize(problem.getAnswer()).equals(normalize(dto.getFixAttempt()));
 
             submitted = "Target: " + dto.getTargetSnippet() + ", Fix: " + dto.getFixAttempt();
+
+//            System.out.println("[DEBUG] 사용자 제출 Target: " + dto.getTargetSnippet());
+//            System.out.println("[DEBUG] 정답 Target: " + problem.getTargetSnippet());
+//            System.out.println("[DEBUG] 사용자 제출 Fix: " + dto.getFixAttempt());
+//            System.out.println("[DEBUG] 정답 Fix: " + problem.getAnswer());
+//            System.out.println("[DEBUG] isCorrect: " + isCorrect);
+
         }
 
         submissionRepository.save(
@@ -90,5 +97,15 @@ public class SubmissionServiceImpl implements SubmissionService {
         return submissionRepository.findByUser_Id(userId).stream()
                 .map(SubmissionDTO::from)
                 .collect(toList());
+    }
+
+    private String normalize(String code) {
+        if (code == null) return "";
+        return code.replaceAll("\\s+", "")
+                .replaceAll(";", "")
+                .replaceAll("\\{", "")
+                .replaceAll("}", "")
+                .replaceAll("\\(", "")
+                .replaceAll("\\)", "");
     }
 }
