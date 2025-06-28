@@ -12,13 +12,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/problems")
@@ -69,5 +68,23 @@ public class ProblemController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setContentLength(json.getBytes(StandardCharsets.UTF_8).length);
 
-        return new ResponseEntity<>(json, headers, HttpStatus.OK);    }
+        return new ResponseEntity<>(json, headers, HttpStatus.OK);
+    }
+
+    @PostMapping("/request")
+    public ResponseEntity<Map<String, String>> requestProblem() {
+        String requestId = UUID.randomUUID().toString();
+        problemService.startAsyncProblemGeneration(requestId);
+        return ResponseEntity.ok(Map.of("requestId", requestId));
+    }
+
+    @GetMapping("/result/{requestId}")
+    public ResponseEntity<List<ProblemDTO>> getProblemResult(@PathVariable String requestId) {
+        List<ProblemDTO> result = problemService.getGeneratedProblems(requestId);
+
+        if (result == null) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.ok(result);
+    }
 }

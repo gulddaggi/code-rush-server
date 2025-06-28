@@ -12,4 +12,8 @@ public interface ProblemService {
     BugFixProblemDTO getBugFixProblemById(Long id);
 
     KnowledgeProblemDTO getKnowledgeProblemById(Long id);
+
+    void startAsyncProblemGeneration(String requestId);
+
+    List<ProblemDTO> getGeneratedProblems(String requestId);
 }

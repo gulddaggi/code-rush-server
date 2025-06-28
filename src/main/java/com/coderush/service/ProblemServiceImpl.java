@@ -10,13 +10,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @RequiredArgsConstructor
 public class ProblemServiceImpl implements ProblemService {
     private final BugFixProblemRepository bugFixProblemRepository;
     private final KnowledgeProblemRepository knowledgeProblemRepository;
+
+    private final GPTService gptService;
+    private final ConcurrentHashMap<String, List<ProblemDTO>> generatedProblemCache = new ConcurrentHashMap<>();
 
     /**
      * 생성된 모든 문제(BugFix + Knowledge)를 통합 리스트로 반환
@@ -65,4 +68,21 @@ public class ProblemServiceImpl implements ProblemService {
                 .map(KnowledgeProblemDTO::from)
                 .orElseThrow(() -> new IllegalArgumentException("해당 지식 문제가 존재하지 않습니다. ID : " + id));
     }
+
+    public void startAsyncProblemGeneration(String requestId) {
+        new Thread(() -> {
+            try {
+                List<ProblemDTO> problems = gptService.generateProblemSet();
+                generatedProblemCache.put(requestId, problems);
+            } catch (Exception e) {
+                e.printStackTrace();
+                // 필요하면 실패 상태 저장도 가능
+            }
+        }).start();
+    }
+
+    public List<ProblemDTO> getGeneratedProblems(String requestId) {
+        return generatedProblemCache.get(requestId);
+    }
+
 }

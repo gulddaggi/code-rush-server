@@ -30,6 +30,7 @@ public class BugFixProblem {
     private List<String> choices;
     private String answer;
 
+    @Column(columnDefinition = "TEXT")
     private String targetSnippet;
     @Column(columnDefinition = "TEXT")
     private String correctFix;
